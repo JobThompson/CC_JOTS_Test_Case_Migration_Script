@@ -1,5 +1,5 @@
 from jira import JIRA
-from JOTSW_Translation.JOTSW_Board_Issue_Object import JOTSWIssueObject
+from JOTSW_Board_Issue_Object import JOTSWIssueObject
 from XMLExport import XMLExporter
 
 # JIRA_TOKEN = 'G3QIN0BFRdvWsG6dcH2eED17'
@@ -9,7 +9,7 @@ jira = JIRA('https://claytoncountygasd.atlassian.net', basic_auth=('Job.Thompson
 def main():
     issues = []
     start_range = 0
-    while start_range <= 600:
+    while start_range <= 700:
         issues_in_proj = jira.search_issues('project=JOTW and labels != Migrate_to_Zephyr', maxResults=100, startAt=start_range)
         for i in issues_in_proj:
             issues.append(JOTSWIssueObject(i, jira))

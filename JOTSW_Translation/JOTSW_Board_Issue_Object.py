@@ -1,9 +1,24 @@
-from JOTSW_Translation.JOTSW_TestCaseObject import JOTWSTestCase
+from pprint import pprint
+from JOTSW_TestCaseObject import JOTWSTestCase
 import fnmatch
 
 numbers = []
 for i in range(100):
     numbers.append(str(i))
+
+starting_list_values = [
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '#',
+]
 
 class JOTSWIssueObject():
     def __init__(self, i, jira) -> None:
@@ -37,17 +52,20 @@ class JOTSWIssueObject():
             steps = self._get_test_case_steps(e)
             test_type = self._get_test_type(e)
             description = self._get_test_case_description(e)
-            test_case = JOTWSTestCase(self, steps, description, test_type)
-            self.test_cases.append(test_case)
+            if steps != [] and 'has no case description' not in description and test_type != 'unknown' and test_type != 'regression':
+                pprint(f'{self.key} - {self.name}')
+                test_case = JOTWSTestCase(self, steps, description, test_type)
+                self.test_cases.append(test_case)
         
 
     def _get_test_case_steps(self, comment):
         test_case = comment.split('\n')
         steps = []
         for i in test_case:
-            if list(filter((i.replace(' ','')).startswith, numbers)) != []:
+            # if list(filter((i.replace(' ','')).startswith, numbers)) != []:
+            if list(filter((i.replace(' ','')).startswith, starting_list_values)) != [] and 'Test Steps:' not in i:
                 step = i
-                step = (''.join([i for i in step[0:3] if not i.isdigit()]) + step[3:]).lstrip('.')
+                step = (''.join([i for i in step[0:3] if not i.isdigit()]) + step[3:]).lstrip('.').lstrip('#')
                 if ' ' in step[0:1]:
                     step = step[1:]
                 steps.append(step)
@@ -68,7 +86,7 @@ class JOTSWIssueObject():
         body = comment.split('\n')
         description = fnmatch.filter(body, '*Case Description:*')
         try:
-            description = description[0].replace('>Case Description:', '').replace('> Case Description:', '').replace('Case Description:', '')
+            description = description[0].replace('>Case Description:', '').replace('> Case Description:', '').replace('Case Description:', '').strip('*')
             if ' ' in description[0:1]:
                 description = description[1:]
         except Exception:
