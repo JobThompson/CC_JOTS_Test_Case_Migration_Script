@@ -2,10 +2,6 @@ from pprint import pprint
 from JOTSW_TestCaseObject import JOTWSTestCase
 import fnmatch
 
-numbers = []
-for i in range(100):
-    numbers.append(str(i))
-
 starting_list_values = [
     '0',
     '1',
@@ -62,7 +58,6 @@ class JOTSWIssueObject():
         test_case = comment.split('\n')
         steps = []
         for i in test_case:
-            # if list(filter((i.replace(' ','')).startswith, numbers)) != []:
             if list(filter((i.replace(' ','')).startswith, starting_list_values)) != [] and 'Test Steps:' not in i:
                 step = i
                 step = (''.join([i for i in step[0:3] if not i.isdigit()]) + step[3:]).lstrip('.').lstrip('#')
