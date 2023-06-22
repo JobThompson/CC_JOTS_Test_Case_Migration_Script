@@ -2,9 +2,7 @@ from jira import JIRA
 from IssueObject import IssueObject
 from XMLExport import XMLExporter
 
-# JIRA_TOKEN = 'G3QIN0BFRdvWsG6dcH2eED17'
-# INIT JIRA Object using the credentials
-jira = JIRA('https://claytoncountygasd.atlassian.net', basic_auth=('Job.Thompson@claytoncountyga.gov', 'G3QIN0BFRdvWsG6dcH2eED17'))
+jira = JIRA('https://Temp.atlassian.net', basic_auth=('', ''))
 
 def main():
     issues = []
